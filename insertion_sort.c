@@ -1,62 +1,42 @@
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
+#include <time.h>
 
-#define MAX_SIZE 500000
-int a[MAX_SIZE];
+void insertion_sort(int a[100], int length);
 
-void insertion_sort(int n) {
-    int i, j, key;
-    for (i = 1; i < n; i++) {
-        key = a[i];
-        j = i - 1;
-        // Move elements of a[0..i-1], that are greater than key,
-        // to one position ahead of their current position
+int main() {
+   int n;
+   int a[100];
+   double clk;
+   clock_t starttime, endtime;
+   printf("Enter the number of elements:");
+   scanf("%d",&n);
+   printf("The elements are:\n");
+   for(int i=0; i<n;i++){
+   // Generate a random number between 100000000 and 999999999 (inclusive)
+    a[i]=rand()% 900000000 + 100000000;
+    printf("%d\t\n",a[i]);
+    }
+    starttime =clock();    
+    insertion_sort(a, n);
+    endtime= clock();
+    clk=(double) (endtime -starttime)/CLOCKS_PER_SEC;
+    printf("The sorted elements are:\n");
+    for (int i = 0; i < 8; i++) {
+        printf("a[%d] = %d\n", i, a[i]);
+    }
+    printf("The run time is %f seconds\n",clk);
+    return 0;
+}
+
+void insertion_sort(int a[], int length) {
+    for (int i = 1; i < length; i++) {
+        int key = a[i];
+        int j = i - 1;
         while (j >= 0 && a[j] > key) {
             a[j + 1] = a[j];
             j = j - 1;
         }
         a[j + 1] = key;
     }
-}
-
-int main() {
-    int n, i;
-    double clk;
-    clock_t starttime, endtime;
-
-    printf("INSERTION SORT\n");
-    printf("Enter the number of employee records:\n");
-    scanf("%d", &n);
-
-    if (n > MAX_SIZE) {
-        printf("Number of records exceeds the maximum allowed size (%d).\n", MAX_SIZE);
-        return 1;
-    }
-
-    srand(time(0)); // Initialize random seed
-
-    for (i = 0; i < n; i++) {
-        a[i] = rand() % 100;
-    }
-
-    printf("The Employee IDs are:\n");
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
-    }
-    printf("\n");
-
-    starttime = clock();
-    insertion_sort(n);
-    endtime = clock();
-
-    clk = (double)(endtime - starttime) / CLOCKS_PER_SEC;
-
-    printf("Employee IDs in sorted order:\n");
-    for (i = 0; i < n; i++) {
-        printf("%d ", a[i]);
-    }
-    printf("\nThe run time is %f seconds\n", clk);
-
-    return 0;
 }
