@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
 
-typedef struct {
+typedef struct edge {
     int u, v, cost;
 } edge;
 
@@ -21,17 +20,8 @@ void union_ij(int i, int j, int parent[]) {
 }
 
 void kruskal(int n, edge e[], int m) {
-    int count, k, i, sum, u, v, j, (*t)[2], p, *parent;
+    int count, k, i, sum, u, v, j, t[10][2], p, parent[10];
     edge temp;
-
-    t = malloc((n-1) * sizeof(*t));
-    parent = malloc(n * sizeof(*parent));
-    if (!t || !parent) {
-        printf("Memory allocation failed\n");
-        free(t);
-        free(parent);
-        return;
-    }
 
     count = 0;
     k = 0;
@@ -78,30 +68,20 @@ void kruskal(int n, edge e[], int m) {
         }
         printf("\nThe cost of the spanning tree is %d\n", sum);
     } else {
-        printf("\nSpanning tree does not exist");
+        printf("\nSpanning tree does not exist\n");
     }
-
-    free(t);
-    free(parent);
 }
 
 int main() {
     int n, m, a, b, i, cost;
     double clk;
     clock_t starttime, endtime;
-    edge *e;
+    edge e[20];
 
     printf("Enter the number of vertices: ");
     scanf("%d", &n);
     printf("Enter the number of edges: ");
     scanf("%d", &m);
-
-    e = malloc(m * sizeof(*e));
-    if (!e) {
-        printf("Memory allocation failed\n");
-        return 1;
-    }
-
     printf("Enter the edge list (u v cost):\n");
     for (i = 0; i < m; i++) {
         scanf("%d %d %d", &a, &b, &cost);
@@ -116,6 +96,5 @@ int main() {
     clk = (double)(endtime - starttime) / CLOCKS_PER_SEC;
     printf("The time taken is %f seconds\n", clk);
 
-    free(e);
     return 0;
 }
