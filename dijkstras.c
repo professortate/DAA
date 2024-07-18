@@ -1,62 +1,71 @@
-#include<stdio.h>
-#include<time.h>
-
-#define MAX 10
-
-int choose(int dist[],int s[],int n)
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+int main()
 {
-  int j=1,min=100,w;
-  for(w=1;w<=n;w++)
-   if((dist[w]<min) && (s[w]==0))
-     {
-       min=dist[w];
-       j=w;
-     }
-   return j;
-}
 
-void spath(int v,int cost[][MAX],int dist[],int n)
- {
-    int w,u,i,num,s[MAX];
-    for(i=1;i<=n;i++)
-     {
-        s[i]=0;
-          dist[i]=cost[v][i];
-        }
-     s[v]=0;
-     dist[i]=999;
-     for(num=2;num<=n;num++)
-      {
-        u=choose(dist,s,n);
-        s[u]=1;
-       for(w=1;w<=n;w++)
-       if((dist[u]+cost[u][w])<dist[w] && !s[w])  
-            dist[w]=dist[u]+cost[u][w];  
-        } 
+int i,j,n,s,cost[10][10],dist[10];
+double clk;
+clock_t starttime, endtime;
+
+void dijkstras(int n, int cost[10][10], int s, int dist[10]);
+
+
+
+printf("Enter no of nodes\n");
+scanf("%d",&n);
+printf("\n Read cost matrix\n");
+for (i=1; i<=n; i++)
+{
+for (j=1; j<=n; j++)
+{
+ scanf("%d",&cost[i][j]);
+ if (cost[i][j]==0)
+  cost [i][j]=999;
+}
  }
+printf("\n Read source vertex:\n");
+scanf("%d",&s);
+starttime=clock();
+dijkstras(n,cost,s,dist);
+endtime=clock();
+printf("\n Shortest path from %d is \n",s);
+for(i=1;i<=n;i++)
+  if(s!=i)
+    printf("%d --->%d=%d\n",s,i,dist[i]);
 
-void main()
-{
-   int i,j,cost[MAX][MAX],dist[MAX],n,v;
-   double clk;
-   clock_t starttime,endtime;
-
-   printf("\nEnter number of vertices:");
-   scanf("%d",&n);
-   printf("\nEnter the cost of adjacency matrix\n");
-  for(i=1;i<=n;i++)
-     for(j=1;j<=n;j++)
-       scanf("%d",&cost[i][j]);
-  printf("\nEnter the source vertex");
-  scanf("%d",&v);
-
-  starttime=clock();
-  spath(v,cost,dist,n);
-  endtime=clock();
-  printf("\nShortest  distance\n");
-  for(i=1;i<=n;i++)
-       printf("\n%d to %d = %d",v,i,dist[i]);
-       clk=(double)(endtime-starttime)/CLOCKS_PER_SEC;
-       printf("The time taken is %f\n",clk);
+clk= (double) (endtime-starttime)/CLOCKS_PER_SEC;
+printf("The time taken for execution is %f \n",clk);
+return 0;
 
 }
+
+void dijkstras(int n, int cost[10][10], int s, int dist[10])
+{
+ int i, v, count=1, min, visited[10];
+ for(i=1; i<=n;i++)
+{
+ visited[i]=0;
+ dist[i]= cost[s][i];
+}
+visited[s]=i;
+dist[s]=0;
+while (count <= n)
+{
+ min =999;
+ for(i=1;i<=n;i++)
+   if(dist[i] < min && visited[i]==0)
+    {
+     min=dist[i];
+     v=i;      
+}
+visited[v] =1;
+count ++;
+for (i=1; i<=n; i++)
+  if (dist[i] > dist[v] + cost[v][i])
+    dist[i]= dist[v] + cost[v][i];
+
+
+}
+}
+ 
